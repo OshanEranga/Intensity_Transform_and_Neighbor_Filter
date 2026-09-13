@@ -5,22 +5,7 @@ import PIL.Image as Image
 import os
 
 def intensity_transform(im: np.ndarray, breakpoints: np.ndarray) -> np.ndarray:
-    """
-    Applies piecewise linear intensity transformation on an input image based on specified breakpoints.
     
-    Parameters:
-    -----------
-    im : np.ndarray
-        Input grayscale image (2D numpy array, uint8 or float).
-    breakpoints : np.ndarray
-        An (N, 2) array/matrix where column 0 represents input intensity values r 
-        and column 1 represents corresponding output intensity values s.
-        
-    Returns:
-    --------
-    np.ndarray
-        Transformed grayscale image of uint8 type with intensity values in [0, 255].
-    """
     breakpoints = np.array(breakpoints, dtype=np.float64)
     r_pts = breakpoints[:, 0]
     s_pts = breakpoints[:, 1]
@@ -41,9 +26,7 @@ def intensity_transform(im: np.ndarray, breakpoints: np.ndarray) -> np.ndarray:
     return transformed_im
 
 def plot_transform_and_images(im, breakpoints_list, titles, save_path="q1_result.png"):
-    """
-    Plots the intensity transformation curves and side-by-side comparison of original and transformed images.
-    """
+    
     num_experiments = len(breakpoints_list)
     fig, axes = plt.subplots(num_experiments, 3, figsize=(14, 4 * num_experiments))
     
@@ -85,46 +68,46 @@ def plot_transform_and_images(im, breakpoints_list, titles, save_path="q1_result
     plt.close()
     print(f"Results saved successfully to {save_path}")
 
-if __name__ == "__main__":
-    img_path = os.path.join("images", "Fig1(b).jpeg")
-    img = Image.open(img_path).convert('L')
-    im_arr = np.array(img)
-    print(f"Loaded image {img_path} with shape {im_arr.shape}")
 
-    # Case 1: Example Breakpoints from text
-    bp_example = np.array([
-        [0, 0],
-        [50, 50],
-        [100, 150],
-        [150, 255],
-        [255, 255]
-    ])
+img_path = os.path.join("images", "Fig1(b).jpeg")
+img = Image.open(img_path).convert('L')
+im_arr = np.array(img)
+print(f"Loaded image {img_path} with shape {im_arr.shape}")
+
+# Case 1: Example Breakpoints from text
+bp_example = np.array([
+    [0, 0],
+    [50, 50],
+    [100, 150],
+    [150, 255],
+    [255, 255]
+])
     
-    # Case 2: Exact Breakpoints from Fig. 1a plot
-    bp_fig1a = np.array([
-        [0, 0],
-        [50, 50],
-        [50, 100],
-        [150, 255],
-        [150, 150],
-        [255, 255]
-    ])
+# Case 2: Exact Breakpoints from Fig. 1a plot
+bp_fig1a = np.array([
+    [0, 0],
+    [50, 50],
+    [50, 100],
+    [150, 255],
+    [150, 150],
+    [255, 255]
+])
     
-    # Case 3: Visually Pleasing Custom Breakpoints (Contrast Stretching)
-    # Stretch midtones while preserving shadows and highlights
-    bp_pleasing = np.array([
-        [0, 0],
-        [30, 10],
-        [120, 170],
-        [220, 245],
-        [255, 255]
-    ])
+# Case 3: Visually Pleasing Custom Breakpoints (Contrast Stretching)
+# Stretch midtones while preserving shadows and highlights
+bp_pleasing = np.array([
+    [0, 0],
+    [30, 10],
+    [120, 170],
+    [220, 245],
+    [255, 255]
+])
     
-    breakpoints_list = [bp_example, bp_fig1a, bp_pleasing]
-    titles = [
-        "Example Breakpoints",
-        "Fig. 1a Depicted Transformation",
-        "Visually Pleasing Contrast Enhancement"
-    ]
+breakpoints_list = [bp_example, bp_fig1a, bp_pleasing]
+titles = [
+    "Example Breakpoints",
+    "Fig. 1a Depicted Transformation",
+     "Visually Pleasing Contrast Enhancement"
+]
     
-    plot_transform_and_images(im_arr, breakpoints_list, titles, "q1_comparison.png")
+plot_transform_and_images(im_arr, breakpoints_list, titles, "q1_comparison.png")
